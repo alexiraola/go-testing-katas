@@ -15,5 +15,9 @@ type SurveillanceController struct {
 }
 
 func (c *SurveillanceController) recordMotion() {
-	c.recorder.stopRecording()
+	if c.sensor.isDetectingMotion() {
+		c.recorder.startRecording()
+	} else {
+		c.recorder.stopRecording()
+	}
 }
