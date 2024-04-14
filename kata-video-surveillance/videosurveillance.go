@@ -1,10 +1,19 @@
 package main
 
-interface MotionSensor {
-  func isDetectingMotion() boolean
+type MotionSensor interface {
+	isDetectingMotion() bool
 }
 
-interface VideoRecorder {
-  func startRecording()
-  func stopRecording()
+type VideoRecorder interface {
+	startRecording()
+	stopRecording()
+}
+
+type SurveillanceController struct {
+	sensor   MotionSensor
+	recorder VideoRecorder
+}
+
+func (c *SurveillanceController) recordMotion() {
+	c.recorder.stopRecording()
 }
