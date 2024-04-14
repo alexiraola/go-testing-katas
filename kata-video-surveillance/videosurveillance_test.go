@@ -2,36 +2,36 @@ package main
 
 import "testing"
 
-type FakeSensor struct {
+type StubSensorDetectingMotion struct {
 	motionDetected bool
 }
 
-func (d FakeSensor) isDetectingMotion() bool {
+func (d StubSensorDetectingMotion) isDetectingMotion() bool {
 	return d.motionDetected
 }
 
-func (d *FakeSensor) changeMotionDetected(motionDetected bool) {
+func (d *StubSensorDetectingMotion) changeMotionDetected(motionDetected bool) {
 	d.motionDetected = motionDetected
 }
 
-type FakeRecorder struct {
+type SpyRecorder struct {
 	stopCalls  int
 	startCalls int
 }
 
-func (r *FakeRecorder) startRecording() {
+func (r *SpyRecorder) startRecording() {
 	r.startCalls++
 	println("start recording...")
 }
 
-func (r *FakeRecorder) stopRecording() {
+func (r *SpyRecorder) stopRecording() {
 	r.stopCalls++
 	println("stop recording...")
 }
 
 func TestAsksStopWhenNoMotion(t *testing.T) {
-	sensor := &FakeSensor{}
-	recorder := &FakeRecorder{startCalls: 0, stopCalls: 0}
+	sensor := &StubSensorDetectingMotion{}
+	recorder := &SpyRecorder{startCalls: 0, stopCalls: 0}
 
 	controller := SurveillanceController{sensor, recorder}
 	controller.recordMotion()
@@ -42,8 +42,8 @@ func TestAsksStopWhenNoMotion(t *testing.T) {
 }
 
 func TestAsksStartWhenDetectsMotion(t *testing.T) {
-	sensor := &FakeSensor{true}
-	recorder := &FakeRecorder{startCalls: 0, stopCalls: 0}
+	sensor := &StubSensorDetectingMotion{true}
+	recorder := &SpyRecorder{startCalls: 0, stopCalls: 0}
 
 	controller := SurveillanceController{sensor, recorder}
 	controller.recordMotion()
