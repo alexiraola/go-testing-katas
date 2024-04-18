@@ -25,9 +25,13 @@ func stringCalculator(text string) int {
 }
 
 func findSeparator(text string) (string, string) {
-	if strings.HasPrefix(text, "//") {
-		separator := text[2:3]
-		numbers := text[4:]
+	beginOfConfig := "//"
+	endOfConfig := "/"
+	if strings.HasPrefix(text, beginOfConfig) {
+		startIndex := len(beginOfConfig)
+		endIndex := strings.LastIndex(text, endOfConfig)
+		separator := text[startIndex:endIndex]
+		numbers := text[endIndex+1:]
 
 		return separator, numbers
 	}
