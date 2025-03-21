@@ -1,10 +1,13 @@
-package valueObjects
+package valueObjects_test
 
-import "testing"
+import (
+	"hexagonal/domain/valueObjects"
+	"testing"
+)
 
 func TestCreatesAnEmailWithValidString(t *testing.T) {
 	validEmail := "test@example.com"
-	_, err := CreateEmail(validEmail)
+	_, err := valueObjects.CreateEmail(validEmail)
 	if err != nil {
 		t.Fatalf("Unexpected error for valid email %s", validEmail)
 	}
@@ -12,7 +15,7 @@ func TestCreatesAnEmailWithValidString(t *testing.T) {
 
 func TestDoesNotAllowCreatingAnEmailForAGivenIncorrectlyFormattedAddress(t *testing.T) {
 	invalidEmail := "invalid"
-	_, err := CreateEmail(invalidEmail)
+	_, err := valueObjects.CreateEmail(invalidEmail)
 
 	if err == nil {
 		t.Fatalf("Expected error for invalid email %s", invalidEmail)
@@ -20,8 +23,8 @@ func TestDoesNotAllowCreatingAnEmailForAGivenIncorrectlyFormattedAddress(t *test
 }
 
 func TestConsidersTwoEmailsWithTheSameAddressAsEqual(t *testing.T) {
-	aEmail, _ := CreateEmail("example@example.com")
-	otherEmail, _ := CreateEmail("example@example.com")
+	aEmail, _ := valueObjects.CreateEmail("example@example.com")
+	otherEmail, _ := valueObjects.CreateEmail("example@example.com")
 
 	if !aEmail.Equals(otherEmail) {
 		t.Errorf("Expected %s and %s to be equal", aEmail.String(), otherEmail.String())
@@ -29,8 +32,8 @@ func TestConsidersTwoEmailsWithTheSameAddressAsEqual(t *testing.T) {
 }
 
 func TestDifferentiatesBetweenTwoEmailsWithDifferentAddress(t *testing.T) {
-	aEmail, _ := CreateEmail("example@example.com")
-	otherEmail, _ := CreateEmail("anotherexample@example.com")
+	aEmail, _ := valueObjects.CreateEmail("example@example.com")
+	otherEmail, _ := valueObjects.CreateEmail("anotherexample@example.com")
 
 	if aEmail.Equals(otherEmail) {
 		t.Errorf("Expected %s and %s not to be equal", aEmail.String(), otherEmail.String())
